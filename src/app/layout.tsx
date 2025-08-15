@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {process.env.NEXT_PUBLIC_ENABLE_ADS === "true" && (
+          <>
+            <Script id="gpt-loader" src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" strategy="afterInteractive" />
+            <Script id="gpt-init" strategy="afterInteractive">{`
+              window.googletag = window.googletag || {cmd: []};
+              window.googletag.cmd.push(function() {
+                window.googletag.pubads().enableSingleRequest();
+                window.googletag.enableServices();
+              });
+            `}</Script>
+          </>
+        )}
         {children}
       </body>
     </html>
