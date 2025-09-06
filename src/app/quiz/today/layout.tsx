@@ -36,12 +36,6 @@ export const metadata: Metadata = {
 export default function ToadyLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<section className="min-h-svh bg-black text-white">
-			<Script
-				id="adsense-init"
-				strategy="afterInteractive"
-				src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9096230429408950"
-				crossOrigin="anonymous"
-			/>
 			{/* JSON-LD: FAQPage */}
 			<Script id="jsonld-faq" type="application/ld+json">
 				{JSON.stringify({
