@@ -77,8 +77,8 @@ export default function TodayPage() {
 		<div className="dark h-screen bg-neutral-900 text-white overflow-hidden">
 			<div className="mx-auto grid h-full max-w-screen-lg grid-cols-1 md:grid-cols-2">
 				{/* PC용 사이드바 - 모바일에서는 숨김 */}
-				<ScrollArea className="hidden md:block border-r border-white/10 bg-neutral-950/40 p-6 overflow-y-auto h-full">
-					<div className="mt-6 pb-6">
+				<ScrollArea className="hidden md:block border-r border-white/10 bg-neutral-950/40 p-6 overflow-y-auto h-screen">
+					<div className="mt-6 h-[calc(100vh-75px)]">
 						<DetailedGuide />	
 					</div>
 				</ScrollArea>

@@ -29,16 +29,22 @@ export function ChatContainer({
 	const [isThinking, setIsThinking] = useState(false)
 	const [messageCount, setMessageCount] = useState(0)
 	const [hintCount, setHintCount] = useState(0)
-	const [attemptCount, setAttemptCount] = useState(0)
 	const { isCompleted, currentQuizId, markCompleted, stats } = useDailyQuiz()
 	const isMobile = useMediaQuery("(max-width: 767px)")
+	const [showHistory, setShowHistory] = useState(false)
+
+	const LS_KEY_START_AT = "toady:startAt"
 
 	// 퀴즈 데이터 가져오기
 	const quiz = getQuiz(currentQuizId || "toady-001")
 	const QUIZ = quiz ? {
+		title: quiz.title,
+		scenario: quiz.scenario,
 		hints: quiz.hints || [],
 		answer: quiz.answer,
 	} : {
+		title: "",
+		scenario: "",
 		hints: [],
 		answer: "",
 	}
@@ -48,14 +54,24 @@ export function ChatContainer({
 		if (stats) {
 			setMessageCount(stats.messageCount)
 			setHintCount(stats.hintCount)
-			setAttemptCount(stats.attemptCount)
 		}
 	}, [stats])
+
+	useEffect(() => {
+		if (!isCompleted) {
+			const v = localStorage.getItem(LS_KEY_START_AT)
+			if (!v) localStorage.setItem(LS_KEY_START_AT, String(Date.now()))
+		}
+	}, [isCompleted])
 
 	useEventListener("toady:send" as unknown as keyof WindowEventMap, () => {
 		if (!sentRef.current) {
 			onFirstMessage?.()
 			sentRef.current = true
+			// 첫 입력 시 시작 시간 저장(없으면)
+			if (!localStorage.getItem(LS_KEY_START_AT)) {
+				localStorage.setItem(LS_KEY_START_AT, String(Date.now()))
+			}
 		}
 	})
 
@@ -70,33 +86,31 @@ export function ChatContainer({
 
 	// 정답 확인 완료 함수
 	const handleConfirmAnswer = () => {
-		// 힌트 사용 횟수는 localStorage에서 가져오기
-		const unlockedHints = parseInt(localStorage.getItem("today:unlockedHints") || "0")
+		const unlocked = parseInt(localStorage.getItem("today:unlockedHints") || "0")
+		const startAt = parseInt(localStorage.getItem(LS_KEY_START_AT) || "0")
+		const durationMs = startAt ? Date.now() - startAt : 0
 		const finalStats = {
 			messageCount,
-			hintCount: unlockedHints,
-			attemptCount,
+			hintCount: unlocked,
+			durationMs,
 			completedAt: new Date().toISOString(),
-			success: false // 정답 확인으로 종료했으므로 false
+			success: false
 		}
 		markCompleted(finalStats)
 		onConfirmAnswer?.()
 	}
 
 	// 통계 업데이트 함수
-	const handleUpdateStats = (newStats: { messageCount?: number; hintCount?: number; attemptCount?: number }) => {
+	const handleUpdateStats = (newStats: { messageCount?: number; hintCount?: number }) => {
 		if (newStats.messageCount !== undefined) {
 			setMessageCount(newStats.messageCount)
 		}
 		if (newStats.hintCount !== undefined) {
 			setHintCount(newStats.hintCount)
 		}
-		if (newStats.attemptCount !== undefined) {
-			setAttemptCount(newStats.attemptCount)
-		}
 	}
 
-	// 퀴즈가 완료된 경우 완료 페이지 표시
+	// 퀴즈가 완료된 경우 완료 페이지 + 바텀 시트 히스토리(컨테이너 내부)
 	if (isCompleted) {
 		return (
 			<div className="flex h-full flex-col relative">
@@ -104,8 +118,36 @@ export function ChatContainer({
 					<CompletedNotice 
 						stats={stats}
 						answer={QUIZ.answer}
+						title={QUIZ.title}
+						scenario={QUIZ.scenario}
+						onShowHistory={() => setShowHistory(true)}
 					/>
 				</div>
+
+				{showHistory && (
+					<>
+						{/* 컨테이너 내부 오버레이 */}
+						<button
+							className="absolute inset-0 z-40 bg-black/40"
+							aria-label="히스토리 닫기"
+							onClick={() => setShowHistory(false)}
+						/>
+						{/* 바텀 시트 */}
+						<div className="absolute left-0 right-0 bottom-0 z-50 rounded-t-2xl border border-white/10 bg-neutral-950 shadow-2xl">
+							<div className="mx-auto w-full max-w-screen-sm">
+								<div className="pt-3 pb-2 flex items-center justify-center">
+									<div className="h-1.5 w-10 rounded-full bg-white/20" />
+								</div>
+								<div className="px-4 pb-4">
+									<h3 className="text-sm font-semibold text-white mb-2">채팅 히스토리</h3>
+									<div className="h-[60vh] rounded-lg border border-white/10 bg-neutral-900/60 overflow-hidden">
+										<ChatWindow readOnly heightClass="h-[60vh]" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</>
+				)}
 			</div>
 		)
 	}

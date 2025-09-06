@@ -45,7 +45,7 @@ export const QUIZ_REGISTRY: Record<string, Quiz> = {
     ],
     checkpoints: [
       "상황은 모노폴리 게임이었다",
-      "차는 말(piece)이었다",
+      // "차는 말(piece)이었다",
       "호텔 칸에 멈춰 임대료 때문에 파산했다"
     ],
     locale: "ko",

@@ -19,7 +19,7 @@ interface MessageInputProps {
 	answer?: string
 	// 통계 관련 props 추가
 	messageCount?: number
-	onUpdateStats?: (stats: { messageCount?: number; hintCount?: number; attemptCount?: number }) => void
+	onUpdateStats?: (stats: { messageCount?: number; hintCount?: number }) => void
 }
 
 export function MessageInput({ 
@@ -74,8 +74,6 @@ export function MessageInput({
 	const handleConfirmGiveUp = () => {
 		setShowGiveUpConfirm(false)
 		setShowAnswer(true)
-		// 도전 횟수 업데이트
-		onUpdateStats?.({ attemptCount: 1 })
 		onShowAnswer?.()
 	}
 
@@ -154,7 +152,7 @@ export function MessageInput({
 										</div>
 									</div>
 								)}
-
+								
 								{/* 정답 섹션 */}
 								<div>
 									<div className="px-2 py-1 text-xs font-medium text-neutral-400 uppercase tracking-wide mb-2">
@@ -178,9 +176,9 @@ export function MessageInput({
 									)}
 								</div>
 
-								<Popover.Arrow className="fill-neutral-950" />
-							</Popover.Content>
-						</Popover.Portal>
+							<Popover.Arrow className="fill-neutral-950" />
+						</Popover.Content>
+					</Popover.Portal>
 					</Popover.Root>
 
 					<textarea
@@ -260,7 +258,7 @@ export function MessageInput({
 
 			{/* 정답 확인 모달 */}
 			{showAnswer && (
-				<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100]">
+				<div className="fixed inset-0 bg-black/50 flex items-center justify-center z:[100]">
 					<div className="bg-neutral-900 border border-neutral-700 rounded-lg p-4 max-w-md mx-4">
 						<div className="flex items-center justify-between mb-4">
 							<div className="flex items-center gap-2">
@@ -276,7 +274,7 @@ export function MessageInput({
 						</div>
 						<div className="mb-4">
 							<div className="p-3 rounded-lg bg-red-950/30 border border-red-800/50">
-								<p className="text-sm text-red-300 leading-relaxed">
+								<p className="text-sm text-red-300 leading-relaxed text-balance">
 									{answer}
 								</p>
 							</div>
@@ -284,9 +282,9 @@ export function MessageInput({
 						<div className="flex gap-2">
 							<button
 								onClick={() => {
-									setShowAnswer(false)
-									onShowAnswer?.()
-								}}
+								setShowAnswer(false)
+								onShowAnswer?.()
+							}}
 								className="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-2 rounded"
 							>
 								정답 확인 완료

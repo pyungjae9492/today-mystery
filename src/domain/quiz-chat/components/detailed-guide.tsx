@@ -1,43 +1,30 @@
 "use client"
 
-import { HelpCircle, Lightbulb, Target, MessageSquare, CheckCircle, Eye, Zap } from "lucide-react"
+import { HelpCircle, Lightbulb, Target, MessageSquare, CheckCircle, Eye, Zap, ArrowLeft } from "lucide-react"
+import { useState } from "react"
+import type { ReactNode } from "react"
+
+interface FaqItem {
+	id: string
+	title: string
+	content: ReactNode
+}
 
 export function DetailedGuide() {
-	return (
-		<div className="space-y-8">
-			{/* 게임 소개 */}
-			<div>
-				<h3 className="font-semibold text-white mb-3 flex items-center gap-2">
-					<Target className="w-4 h-4" />
-					게임 소개
-				</h3>
-				<p className="text-sm text-neutral-300 leading-relaxed">
-					바다거북스프는 추리 게임입니다. 주어진 시나리오를 바탕으로 <strong className="text-purple-400">예/아니오 질문만</strong>을 통해 사건의 전말을 파악하고 정답을 찾아내는 게임이에요.
-				</p>
-			</div>
+	const [activeId, setActiveId] = useState<string | null>(null)
 
-			{/* 1. 질문하는 법 */}
-			<div>
-				<h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-					<MessageSquare className="w-4 h-4" />
-					1. 질문하는 법
-				</h3>
+	const faqs: FaqItem[] = [
+		{
+			id: "ask",
+			title: "1. 질문하는 법",
+			content: (
 				<div className="space-y-4">
 					<div className="bg-neutral-800/50 border border-neutral-700 rounded-lg p-4">
 						<h4 className="text-purple-400 font-medium mb-3">✅ 올바른 질문 방법</h4>
 						<ul className="space-y-2 text-sm text-neutral-300">
-							<li className="flex items-start gap-2">
-								<span className="text-green-400 mt-0.5">•</span>
-								<span><strong>예/아니오로 답할 수 있는 질문만:</strong> "~인가요?", "~입니까?" 형태</span>
-							</li>
-							<li className="flex items-start gap-2">
-								<span className="text-green-400 mt-0.5">•</span>
-								<span><strong>핵심 요소 추리:</strong> 사건의 원인, 장소, 인물, 상황 등을 질문</span>
-							</li>
-							<li className="flex items-start gap-2">
-								<span className="text-green-400 mt-0.5">•</span>
-								<span><strong>단계적 접근:</strong> 넓은 범위에서 시작해 점점 좁혀가기</span>
-							</li>
+							<li className="flex items-start gap-2"><span className="text-green-400 mt-0.5">•</span><span><strong>예/아니오로 답할 수 있는 질문만:</strong> "~인가요?", "~입니까?"</span></li>
+							<li className="flex items-start gap-2"><span className="text-green-400 mt-0.5">•</span><span><strong>핵심 요소 추리:</strong> 사건의 원인, 장소, 인물, 상황 등을 질문</span></li>
+							<li className="flex items-start gap-2"><span className="text-green-400 mt-0.5">•</span><span><strong>단계적 접근:</strong> 넓은 범위에서 시작해 점점 좁혀가기</span></li>
 						</ul>
 					</div>
 
@@ -68,136 +55,74 @@ export function DetailedGuide() {
 					<div className="bg-red-950/30 border border-red-800/50 rounded-lg p-4">
 						<h4 className="text-red-400 font-medium mb-3">❌ 피해야 할 질문</h4>
 						<ul className="space-y-2 text-sm text-neutral-300">
-							<li className="flex items-start gap-2">
-								<span className="text-red-400 mt-0.5">•</span>
-								<span>"왜 그랬을까요?" (이유 묻기)</span>
-							</li>
-							<li className="flex items-start gap-2">
-								<span className="text-red-400 mt-0.5">•</span>
-								<span>"어디서 일어났나요?" (구체적 장소)</span>
-							</li>
-							<li className="flex items-start gap-2">
-								<span className="text-red-400 mt-0.5">•</span>
-								<span>"누가 했나요?" (구체적 인물)</span>
-							</li>
-							<li className="flex items-start gap-2">
-								<span className="text-red-400 mt-0.5">•</span>
-								<span>"어떻게 했나요?" (구체적 방법)</span>
-							</li>
+							<li className="flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span><span>"왜 그랬을까요?" (이유 묻기)</span></li>
+							<li className="flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span><span>"어디서 일어났나요?" (구체적 장소)</span></li>
+							<li className="flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span><span>"누가 했나요?" (구체적 인물)</span></li>
+							<li className="flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span><span>"어떻게 했나요?" (구체적 방법)</span></li>
 						</ul>
 					</div>
 				</div>
-			</div>
-
-			{/* 2. 정답 맞추는 법 */}
-			<div>
-				<h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-					<CheckCircle className="w-4 h-4" />
-					2. 정답 맞추는 법
-				</h3>
+			)
+		},
+		{
+			id: "answer",
+			title: "2. 정답 맞추는 법",
+			content: (
 				<div className="bg-neutral-800/50 border border-neutral-700 rounded-lg p-4">
 					<div className="space-y-3 text-sm text-neutral-300">
-						<div className="flex items-start gap-2">
-							<span className="text-green-400 mt-0.5">•</span>
-							<span><strong>충분한 정보 수집:</strong> 핵심적인 요소들을 모두 파악했다고 생각될 때</span>
-						</div>
-						<div className="flex items-start gap-2">
-							<span className="text-green-400 mt-0.5">•</span>
-							<span><strong>정답 추측:</strong> "정답은 ~입니다" 형태로 직접 말해보세요</span>
-						</div>
-						<div className="flex items-start gap-2">
-							<span className="text-green-400 mt-0.5">•</span>
-							<span><strong>정답 확인:</strong> 맞으면 게임 완료, 틀리면 계속 질문 가능</span>
-						</div>
+						<div className="flex items-start gap-2"><span className="text-green-400 mt-0.5">•</span><span><strong>충분한 정보 수집:</strong> 핵심적인 요소들을 모두 파악했다고 생각될 때</span></div>
+						<div className="flex items-start gap-2"><span className="text-green-400 mt-0.5">•</span><span><strong>정답 추측:</strong> "정답은 ~입니다" 형태로 직접 말해보세요</span></div>
+						<div className="flex items-start gap-2"><span className="text-green-400 mt-0.5">•</span><span><strong>정답 확인:</strong> 맞으면 게임 완료, 틀리면 계속 질문 가능</span></div>
 					</div>
-					
 					<div className="mt-4 p-3 bg-green-950/30 border border-green-800/50 rounded">
-						<p className="text-sm text-green-300">
-							<strong>💡 팁:</strong> 너무 성급하게 추측하지 말고, 최소 5-10개의 질문을 통해 충분한 정보를 얻은 후 정답을 맞춰보세요.
-						</p>
+						<p className="text-sm text-green-300"><strong>💡 팁:</strong> 너무 성급하게 추측하지 말고, 최소 5-10개의 질문을 통해 충분한 정보를 얻은 후 정답을 맞춰보세요.</p>
 					</div>
 				</div>
-			</div>
-
-			{/* 3. 힌트 받는 법 */}
-			<div>
-				<h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-					<Lightbulb className="w-4 h-4" />
-					3. 힌트 받는 법
-				</h3>
+			)
+		},
+		{
+			id: "hint",
+			title: "3. 힌트 받는 법",
+			content: (
 				<div className="bg-neutral-800/50 border border-neutral-700 rounded-lg p-4">
 					<div className="space-y-3 text-sm text-neutral-300">
-						<div className="flex items-start gap-2">
-							<span className="text-yellow-400 mt-0.5">•</span>
-							<span><strong>메뉴 버튼 클릭:</strong> 입력창 옆의 + 버튼을 클릭하세요</span>
-						</div>
-						<div className="flex items-start gap-2">
-							<span className="text-yellow-400 mt-0.5">•</span>
-							<span><strong>힌트 해금:</strong> "힌트 N 해금하기" 버튼을 클릭하여 순차적으로 힌트를 받으세요</span>
-						</div>
-						<div className="flex items-start gap-2">
-							<span className="text-yellow-400 mt-0.5">•</span>
-							<span><strong>전략적 사용:</strong> 막혔을 때만 힌트를 사용하고, 너무 빨리 모든 힌트를 보지 마세요</span>
-						</div>
+						<div className="flex items-start gap-2"><span className="text-yellow-400 mt-0.5">•</span><span><strong>메뉴 버튼 클릭:</strong> 입력창 옆의 + 버튼을 클릭하세요</span></div>
+						<div className="flex items-start gap-2"><span className="text-yellow-400 mt-0.5">•</span><span><strong>힌트 해금:</strong> "힌트 N 해금하기" 버튼을 클릭하여 순차적으로 힌트를 받으세요</span></div>
+						<div className="flex items-start gap-2"><span className="text-yellow-400 mt-0.5">•</span><span><strong>전략적 사용:</strong> 막혔을 때만 힌트를 사용하고, 너무 빨리 모든 힌트를 보지 마세요</span></div>
 					</div>
-					
 					<div className="mt-4 p-3 bg-yellow-950/30 border border-yellow-800/50 rounded">
-						<p className="text-sm text-yellow-300">
-							<strong>💡 팁:</strong> 힌트는 최후의 수단으로 사용하세요. 먼저 스스로 추리해보는 것이 더 재미있습니다!
-						</p>
+						<p className="text-sm text-yellow-300"><strong>💡 팁:</strong> 힌트는 최후의 수단으로 사용하세요. 먼저 스스로 추리해보는 것이 더 재미있습니다!</p>
 					</div>
 				</div>
-			</div>
-
-			{/* 4. 포기하고 정답 보는 법 */}
-			<div>
-				<h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-					<Eye className="w-4 h-4" />
-					4. 포기하고 정답 보는 법
-				</h3>
+			)
+		},
+		{
+			id: "giveup",
+			title: "4. 포기하고 정답 보는 법",
+			content: (
 				<div className="bg-neutral-800/50 border border-neutral-700 rounded-lg p-4">
 					<div className="space-y-3 text-sm text-neutral-300">
-						<div className="flex items-start gap-2">
-							<span className="text-red-400 mt-0.5">•</span>
-							<span><strong>메뉴 버튼 클릭:</strong> 채팅창 우상단의 ⋮ 버튼을 클릭하세요</span>
-						</div>
-						<div className="flex items-start gap-2">
-							<span className="text-red-400 mt-0.5">•</span>
-							<span><strong>정답 확인:</strong> "정답 확인하기" 버튼을 클릭하세요</span>
-						</div>
-						<div className="flex items-start gap-2">
-							<span className="text-red-400 mt-0.5">•</span>
-							<span><strong>정답 확인 완료:</strong> 정답을 확인한 후 "정답 확인 완료" 버튼을 클릭하면 게임이 완료됩니다</span>
-						</div>
+						<div className="flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span><span><strong>메뉴 버튼 클릭:</strong> 채팅창 좌측의 + 버튼을 클릭하세요</span></div>
+						<div className="flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span><span><strong>정답 확인:</strong> "정답 확인하기" 버튼을 클릭하세요</span></div>
+						<div className="flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span><span><strong>정답 확인 완료:</strong> 정답을 확인한 후 "정답 확인 완료" 버튼을 클릭하면 게임이 완료됩니다</span></div>
 					</div>
-					
 					<div className="mt-4 p-3 bg-red-950/30 border border-red-800/50 rounded">
-						<p className="text-sm text-red-300">
-							<strong>⚠️ 주의:</strong> 정답을 확인하면 게임이 완료되므로, 정말 포기할 때만 사용하세요. 다음 날까지 기다려야 새로운 퀴즈를 풀 수 있습니다.
-						</p>
+						<p className="text-sm text-red-300"><strong>⚠️ 주의:</strong> 정답을 확인하면 게임이 완료되므로, 정말 포기할 때만 사용하세요. 다음 날까지 기다려야 새로운 퀴즈를 풀 수 있습니다.</p>
 					</div>
 				</div>
-			</div>
-
-			{/* 조작법 */}
-			<div>
-				<h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-					<Zap className="w-4 h-4" />
-					조작법
-				</h3>
+			)
+		},
+		{
+			id: "controls",
+			title: "조작법",
+			content: (
 				<div className="bg-neutral-800/50 border border-neutral-700 rounded-lg p-4">
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
 						<div>
 							<h4 className="text-neutral-200 font-medium mb-2">키보드 단축키:</h4>
 							<div className="space-y-2">
-								<div className="flex items-center gap-3">
-									<span className="bg-neutral-700 px-2 py-1 rounded font-mono text-xs">Enter</span>
-									<span className="text-neutral-300">메시지 전송</span>
-								</div>
-								<div className="flex items-center gap-3">
-									<span className="bg-neutral-700 px-2 py-1 rounded font-mono text-xs">Shift + Enter</span>
-									<span className="text-neutral-300">줄바꿈</span>
-								</div>
+								<div className="flex items-center gap-3"><span className="bg-neutral-700 px-2 py-1 rounded font-mono text-xs">Enter</span><span className="text-neutral-300">메시지 전송</span></div>
+								<div className="flex items-center gap-3"><span className="bg-neutral-700 px-2 py-1 rounded font-mono text-xs">Shift + Enter</span><span className="text-neutral-300">줄바꿈</span></div>
 							</div>
 						</div>
 						<div>
@@ -210,6 +135,56 @@ export function DetailedGuide() {
 							</ul>
 						</div>
 					</div>
+				</div>
+			)
+		},
+	]
+
+	if (activeId) {
+		const item = faqs.find(f => f.id === activeId)
+		return (
+			<div className="space-y-4">
+				<button onClick={() => setActiveId(null)} className="inline-flex items-center gap-1 text-xs text-neutral-400 hover:text-white">
+					<ArrowLeft className="w-4 h-4" />
+					뒤로가기
+				</button>
+				<h3 className="font-semibold text-white mb-2 flex items-center gap-2">
+					<HelpCircle className="w-4 h-4" />
+					{item?.title}
+				</h3>
+				<div>{item?.content}</div>
+			</div>
+		)
+	}
+
+	return (
+		<div className="flex flex-col justify-between h-full">
+			{/* 상단 고정: 확장된 게임 소개 */}
+			<div className="flex flex-col gap-2">
+				<h3 className="font-semibold text-white mb-1 flex items-center gap-2">
+					<Target className="w-4 h-4" />
+					게임 소개
+				</h3>
+				<div className="rounded-lg border border-white/10 bg-neutral-900/60 p-4 text-sm text-neutral-300 leading-relaxed">
+					<p>바다거북스프는 짧은 시나리오를 단서로 사건의 전말을 유추하는 추리 게임입니다. 플레이어는 <strong className="text-purple-400">예/아니오</strong>로만 대답 가능한 질문을 던지며 퍼즐을 풀어갑니다. 혼자 또는 친구들과 가볍게 즐기기에 좋아요.</p>
+					<p className="mt-3">이 프로젝트는 “사회자 없이도 언제든 즐길 수 있게”라는 취지에서 시작됐습니다. <strong className="text-purple-400">친구들과 바다거북스프를 정말 재밌게 즐겼는데, 문제를 아는 사회자가 없어도 AI가 사회자를 대신하면 어떨까?</strong> 하는 마음으로 만들었습니다.</p>
+					<p className="mt-3">좌측 채팅창에서 질문을 입력해 보세요. 가끔 막히면 + 메뉴에서 힌트를 열어볼 수 있고, 포기하고 정답을 볼 수도 있습니다.</p>
+				</div>
+			</div>
+
+			{/* 하단: FAQ 목록 */}
+			<div className="flex flex-col gap-2">
+				<h4 className="font-semibold text-white/90 flex items-center gap-2"><HelpCircle className="w-4 h-4" />자주 묻는 질문</h4>
+				<div className="divide-y divide-white/10 rounded-lg border border-white/10 overflow-hidden">
+					{faqs.map((f) => (
+						<button
+							key={f.id}
+							onClick={() => setActiveId(f.id)}
+							className="w-full text-left px-3 py-3 hover:bg-white/5 focus:bg-white/5"
+						>
+							<p className="text-sm text-white/90">{f.title}</p>
+						</button>
+					))}
 				</div>
 			</div>
 		</div>

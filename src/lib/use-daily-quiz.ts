@@ -4,7 +4,7 @@ import { useLocalStorage } from "usehooks-ts"
 interface QuizStats {
   messageCount: number
   hintCount: number
-  attemptCount: number
+  durationMs: number
   completedAt: string
   success: boolean // 정답을 맞췄는지 포기했는지
 }
@@ -124,7 +124,7 @@ export function useDailyQuiz(): DailyQuizState {
     const finalStats = newStats || {
       messageCount: 0,
       hintCount: 0,
-      attemptCount: 0,
+      durationMs: 0,
       completedAt: today.toISOString(),
       success: false
     }

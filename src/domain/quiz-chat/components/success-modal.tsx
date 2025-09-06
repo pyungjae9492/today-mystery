@@ -15,17 +15,17 @@ export function SuccessModal({ open, onOpenChange, answer, onComplete }: Success
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/80 backdrop-blur-sm" />
-        <Dialog.Content className="fixed inset-x-4 top-1/2 -translate-y-1/2 rounded-xl border border-green-500/20 bg-neutral-950 p-6 shadow-2xl">
+        <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(92vw,560px)] rounded-xl border border-green-500/20 bg-neutral-950 p-6 shadow-2xl">
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", duration: 0.5 }}
             className="text-center"
           >
             <motion.div
-              initial={{ rotate: 0 }}
-              animate={{ rotate: 360 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              initial={{ scale: 0.9, rotate: -6 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
               className="mx-auto mb-4 h-16 w-16 rounded-full bg-gradient-to-r from-green-400 to-green-600 flex items-center justify-center"
             >
               <span className="text-2xl">🎉</span>
@@ -39,9 +39,9 @@ export function SuccessModal({ open, onOpenChange, answer, onComplete }: Success
               축하합니다! 퀴즈를 성공적으로 해결하셨네요.
             </p>
             
-            <div className="bg-neutral-900 rounded-lg p-3 mb-6">
+            <div className="bg-neutral-900 rounded-lg p-3 mb-6 border border-white/10">
               <p className="text-sm text-neutral-400 mb-1">정답</p>
-              <p className="text-green-400 font-medium">{answer}</p>
+              <p className="text-green-400 font-medium break-words text-balance">{answer}</p>
             </div>
             
             <div className="flex justify-center">

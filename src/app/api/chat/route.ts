@@ -30,6 +30,7 @@ const rb = {
   answerDeflect: "정답은 상단의 빨간색 버튼을 눌러서 확인할 수 있어요. 예/아니오 질문으로 한 번 좁혀볼까요?",
   irrelevantCoach: "이야기 재밌지만, 지금은 퀴즈 집중! 예/아니오로 물어보면 진행이 빨라집니다.",
   formatCoach: (ex?: string) => `예/아니오로 답할 수 있게 살짝 바꿔볼까요?${ex ? " 예: " + ex : ""}`,
+  ambiguousCoach: (ex?: string) => `그렇게 볼 수도 있고, 아닐 수도 있어요. 더 정확해지려면 질문을 조금만 좁혀볼까요?${ex ? " 예: " + ex : ""}`,
   yesno: (label: string) => {
     if (label.startsWith("YES_CORE")) return "네, 정확히 핵심을 짚으셨어요! 👏"
     if (label.startsWith("YES_PERIPHERAL")) return "네, 맞아요."
@@ -244,8 +245,17 @@ export async function POST(req: Request) {
           const yesnoInput = `${historyBlock}Current question: """${text}"""`
           const judgeRes = await run(yesno, yesnoInput)
           const parsed = extractJson<{ label: string }>(judgeRes.finalOutput || "")
-          reply = parsed?.label ? rb.yesno(parsed.label) : rb.yesno("UNKNOWN")
-          details = parsed?.label
+          const label = parsed?.label || "UNKNOWN"
+          if (label === "UNKNOWN") {
+            const ex =
+              /장소|어디/.test(text) ? "상자 안의 '내용물'과 관련이 있나요?"
+                : /이유|원인/.test(text) ? "신고의 이유가 '상자 내부의 상태' 때문인가요?"
+                  : "질문 범위를 조금 더 좁혀볼까요?"
+            reply = rb.ambiguousCoach(ex)
+          } else {
+            reply = rb.yesno(label)
+          }
+          details = label
           break
         }
         default:

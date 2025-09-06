@@ -14,8 +14,9 @@ interface QuizNoticeProps {
 	description: string
 	collapsed: boolean
 	onToggle: () => void
-	guideOpen?: boolean
+
 	onGuideToggle?: () => void
+	guideOpen?: boolean
 }
 
 export function QuizNotice({ title, description, collapsed, onToggle, guideOpen = false, onGuideToggle }: QuizNoticeProps) {
@@ -35,7 +36,7 @@ export function QuizNotice({ title, description, collapsed, onToggle, guideOpen 
 
 	return (
 		<>
-			<div className="sticky top-0 z-30 bg-neutral-900/90 backdrop-blur">
+			<div className="sticky top-0 z-30 bg-neutral-900/90 backdrop-blur relative">
 				<motion.div
 					initial={{ y: -20, opacity: 0 }}
 					animate={{ y: 0, opacity: 1 }}
@@ -56,20 +57,6 @@ export function QuizNotice({ title, description, collapsed, onToggle, guideOpen 
 								{title}
 							</motion.span>
 						</p>
-						<AnimatePresence initial={false}>
-							{!collapsed && (
-								<motion.p
-									key="desc"
-									initial={{ height: 0, opacity: 0 }}
-									animate={{ height: "auto", opacity: 1 }}
-									exit={{ height: 0, opacity: 0 }}
-									transition={{ duration: 0.25 }}
-									className="mt-1 text-xs text-neutral-300 leading-relaxed overflow-hidden"
-								>
-									{description}
-								</motion.p>
-							)}
-						</AnimatePresence>
 					</div>
 					<div className="flex items-center gap-2">
 						{/* 가이드 버튼 */}
@@ -100,6 +87,26 @@ export function QuizNotice({ title, description, collapsed, onToggle, guideOpen 
 						</button>
 					</div>
 				</motion.div>
+
+				{/* 드롭다운 공지: 헤더 바로 아래 absolute로 표시 */}
+				<AnimatePresence initial={false}>
+					{!collapsed && (
+						<motion.div
+							key="notice-panel"
+							initial={{ opacity: 0, y: -6, height: 0 }}
+							animate={{ opacity: 1, y: 0, height: "auto" }}
+							exit={{ opacity: 0, y: -6, height: 0 }}
+							transition={{ duration: 0.2 }}
+							className="absolute left-0 right-0 top-full px-4"
+						>
+							<div className="mt-2 rounded-lg border border-white/10 bg-neutral-950/95 p-3 shadow-xl">
+								<p className="text-xs text-neutral-300 leading-relaxed">
+									{description}
+								</p>
+							</div>
+						</motion.div>
+					)}
+				</AnimatePresence>
 			</div>
 
 			{/* 모바일 가이드 모달 */}
