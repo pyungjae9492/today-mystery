@@ -123,7 +123,7 @@ export default function TodayPage() {
 												transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
 												className="bg-gradient-to-r from-purple-400 via-fuchsia-300 to-purple-400 bg-[length:200%_100%] bg-clip-text text-transparent"
 											>
-												{QUIZ.title}
+												오늘의 미스터리
 											</motion.span>
 										</h1>
 										<p className="mt-2 text-sm text-neutral-300 leading-relaxed">{QUIZ.description}</p>

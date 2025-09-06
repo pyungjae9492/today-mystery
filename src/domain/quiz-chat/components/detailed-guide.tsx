@@ -3,6 +3,7 @@
 import { HelpCircle, Lightbulb, Target, MessageSquare, CheckCircle, Eye, Zap, ArrowLeft } from "lucide-react"
 import { useState } from "react"
 import type { ReactNode } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
 interface FaqItem {
 	id: string
@@ -143,17 +144,26 @@ export function DetailedGuide() {
 	if (activeId) {
 		const item = faqs.find(f => f.id === activeId)
 		return (
-			<div className="space-y-4">
-				<button onClick={() => setActiveId(null)} className="inline-flex items-center gap-1 text-xs text-neutral-400 hover:text-white">
-					<ArrowLeft className="w-4 h-4" />
-					뒤로가기
-				</button>
-				<h3 className="font-semibold text-white mb-2 flex items-center gap-2">
-					<HelpCircle className="w-4 h-4" />
-					{item?.title}
-				</h3>
-				<div>{item?.content}</div>
-			</div>
+			<AnimatePresence mode="wait">
+				<motion.div
+					key={activeId}
+					initial={{ opacity: 0, y: 16 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: -16 }}
+					transition={{ duration: 0.25 }}
+					className="space-y-4"
+				>
+					<button onClick={() => setActiveId(null)} className="inline-flex items-center gap-1 text-xs text-neutral-400 hover:text-white">
+						<ArrowLeft className="w-4 h-4" />
+						뒤로가기
+					</button>
+					<h3 className="font-semibold text-white mb-2 flex items-center gap-2">
+						<HelpCircle className="w-4 h-4" />
+						{item?.title}
+					</h3>
+					<div>{item?.content}</div>
+				</motion.div>
+			</AnimatePresence>
 		)
 	}
 
@@ -173,20 +183,29 @@ export function DetailedGuide() {
 			</div>
 
 			{/* 하단: FAQ 목록 */}
-			<div className="flex flex-col gap-2">
-				<h4 className="font-semibold text-white/90 flex items-center gap-2"><HelpCircle className="w-4 h-4" />자주 묻는 질문</h4>
-				<div className="divide-y divide-white/10 rounded-lg border border-white/10 overflow-hidden">
-					{faqs.map((f) => (
-						<button
-							key={f.id}
-							onClick={() => setActiveId(f.id)}
-							className="w-full text-left px-3 py-3 hover:bg-white/5 focus:bg-white/5"
-						>
-							<p className="text-sm text-white/90">{f.title}</p>
-						</button>
-					))}
-				</div>
-			</div>
+			<AnimatePresence mode="wait">
+				<motion.div
+					key="faq-list"
+					initial={{ opacity: 0, y: 12 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: 12 }}
+					transition={{ duration: 0.2 }}
+					className="flex flex-col gap-2"
+				>
+					<h4 className="font-semibold text-white/90 flex items-center gap-2"><HelpCircle className="w-4 h-4" />자주 묻는 질문</h4>
+					<div className="divide-y divide-white/10 rounded-lg border border-white/10 overflow-hidden">
+						{faqs.map((f) => (
+							<button
+								key={f.id}
+								onClick={() => setActiveId(f.id)}
+								className="w-full text-left px-3 py-3 hover:bg-white/5 focus:bg-white/5"
+							>
+								<p className="text-sm text-white/90">{f.title}</p>
+							</button>
+						))}
+					</div>
+				</motion.div>
+			</AnimatePresence>
 		</div>
 	)
 } 
