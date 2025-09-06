@@ -36,7 +36,7 @@ export function SidebarGuide({ isOpen, onToggle }: SidebarGuideProps) {
 						<ul className="space-y-2 text-sm text-neutral-300">
 							<li className="flex items-start gap-2">
 								<span className="text-green-400 mt-0.5">•</span>
-								<span><strong>예/아니오로 답할 수 있는 질문만:</strong> "~인가요?", "~입니까?" 형태</span>
+								<span><strong>예/아니오로 답할 수 있는 질문만:</strong> {'"~인가요?"'}, {'"~입니까?"'} 형태</span>
 							</li>
 							<li className="flex items-start gap-2">
 								<span className="text-green-400 mt-0.5">•</span>
@@ -54,7 +54,7 @@ export function SidebarGuide({ isOpen, onToggle }: SidebarGuideProps) {
 						<ul className="space-y-2 text-sm text-neutral-300">
 							<li className="flex items-start gap-2">
 								<span className="text-red-400 mt-0.5">•</span>
-								<span><strong>개방형 질문:</strong> "어떻게?", "왜?", "무엇을?" 등</span>
+								<span><strong>개방형 질문:</strong> {'"어떻게?"'}, {'"왜?"'}, {'"무엇을?"'} 등</span>
 							</li>
 							<li className="flex items-start gap-2">
 								<span className="text-red-400 mt-0.5">•</span>
@@ -62,7 +62,7 @@ export function SidebarGuide({ isOpen, onToggle }: SidebarGuideProps) {
 							</li>
 							<li className="flex items-start gap-2">
 								<span className="text-red-400 mt-0.5">•</span>
-								<span><strong>정답 추측:</strong> "정답이 ~인가요?" 형태의 질문</span>
+								<span><strong>정답 추측:</strong> {'"정답이 ~인가요?"'} 형태의 질문</span>
 							</li>
 						</ul>
 					</div>

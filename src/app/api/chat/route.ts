@@ -1,6 +1,6 @@
 // app/api/turtlesoup/route.ts
 import { NextResponse } from "next/server"
-import { getQuiz } from "@/lib/quiz"
+import { getQuiz, type Quiz } from "@/lib/quiz"
 import { Agent, run } from "@openai/agents"
 import { setDefaultOpenAIKey } from "@openai/agents-openai"
 
@@ -11,15 +11,15 @@ const MODEL = "gpt-5-mini"
 type HistoryItem = { role: "user" | "assistant"; content: string }
 
 /* ───────────────── JSON 파서 ───────────────── */
-function extractJson<T = any>(raw: string): T | null {
+function extractJson<T = Record<string, unknown>>(raw: string): T | null {
   if (!raw) return null
-  try { return JSON.parse(raw) } catch { }
+  try { return JSON.parse(raw) as T } catch { }
   const s = raw.indexOf("{"), e = raw.lastIndexOf("}")
   if (s !== -1 && e !== -1 && e > s) {
     const slice = raw.slice(s, e + 1)
-    try { return JSON.parse(slice) } catch { }
-    let fixed = slice.replace(/'/g, '"').replace(/,\s*([}\]])/g, "$1")
-    try { return JSON.parse(fixed) } catch { }
+    try { return JSON.parse(slice) as T } catch { }
+    const fixed = slice.replace(/'/g, '"').replace(/,\s*([}\]])/g, "$1")
+    try { return JSON.parse(fixed) as T } catch { }
   }
   return null
 }
@@ -55,7 +55,7 @@ const CORE_JSON_ONLY = `
 
 /* ───────────── 에이전트들 ───────────── */
 // ① Validation: 히스토리 + 현재 질문 → 분류만 반환
-const createValidationAgent = (quiz: any) =>
+const createValidationAgent = (quiz: Quiz) =>
   new Agent({
     name: "ValidationAgent",
     model: MODEL,
@@ -87,7 +87,7 @@ Quiz (reference only, do not expose):
   })
 
 // ② Yes/No 라벨러: 현재 질문만 입력
-const createYesNoJudgeAgent = (quiz: any) =>
+const createYesNoJudgeAgent = (quiz: Quiz) =>
   new Agent({
     name: "YesNoJudge",
     model: MODEL,
@@ -144,7 +144,7 @@ Quiz context (reference only, do not expose):
   })
 
 // ③ 체크포인트 기반 정답 채점기: 현재 질문만 입력
-const createAnswerCheckAgent = (quiz: any) =>
+const createAnswerCheckAgent = (quiz: Quiz) =>
   new Agent({
     name: "AnswerChecker",
     model: MODEL,
@@ -268,8 +268,9 @@ export async function POST(req: Request) {
       classification: parsedValidation?.classification || "UNKNOWN",
       details
     })
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error(e)
-    return NextResponse.json({ error: e?.message || "Unknown error" }, { status: 500 })
+    const message = e instanceof Error ? e.message : String(e)
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
