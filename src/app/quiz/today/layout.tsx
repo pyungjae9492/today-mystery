@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "오늘의 미스터리 << | 바다거북스프",
+		title: "오늘의 미스터리 | 바다거북스프",
 		description: "바다거북스프 추리 게임 - 예/아니오 질문으로 오늘의 미스터리를 풀어보세요."
 	},
 	alternates: {
