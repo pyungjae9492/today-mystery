@@ -169,14 +169,36 @@ export function ChatWindow({ onFirstMessage, onThinkingChange, readOnly = false,
 			<ScrollArea className="flex-1" viewportRef={viewportRef}>
 				<div className="min-h-full px-3 py-3 space-y-2">
 					{messages.length === 0 && (
+						<motion.div
+						key="hero"
+						initial={{ y: 0, opacity: 1 }}
+						animate={{ y: 0, opacity: 1 }}
+						exit={{ y: -40, opacity: 0 }}
+						transition={{ type: "spring", stiffness: 260, damping: 26 }}
+						className="flex-shrink-0 p-6 absolute top-0 left-0 w-full h-full"
+					>
+						<div className="w-full rounded-xl border border-white/10 bg-neutral-950 p-5 text-center">
+							<h1 className="text-base font-semibold">
+								<motion.span
+									initial={{ backgroundPosition: "0% 50%" }}
+									animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+									transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+									className="bg-gradient-to-r from-purple-400 via-fuchsia-300 to-purple-400 bg-[length:200%_100%] bg-clip-text text-transparent"
+								>
+									오늘의 미스터리
+								</motion.span>
+							</h1>
+							<p className="mt-2 text-sm text-neutral-300 leading-relaxed text-balance whitespace-pre-wrap break-keep">{quiz?.scenario}</p>
+						</div>
 						<motion.p
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 0.7 }}
 							transition={{ duration: 0.6 }}
-							className="text-center text-xs text-neutral-400 font-mono"
+							className="text-center text-xs text-neutral-300 font-mono py-4 leading-relaxed text-balance whitespace-pre-wrap break-keep"
 						>
-							질문을 시작해보세요. 예/아니오 형태의 질문이 좋아요.
+							{"예/아니오로 답할 수 있는 질문을 던져 정답을 맞춰보세요. \n메세지를 보내면 채팅이 시작됩니다."}
 						</motion.p>
+					</motion.div>
 					)}
 					{messages.map((m: Message) => (
 						<ChatMessage key={m.id} role={m.role} content={m.content} />

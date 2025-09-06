@@ -84,11 +84,11 @@ export default function TodayPage() {
 				</ScrollArea>
 
 				{/* 메인 채팅 영역 */}
-				<div className="flex h-full flex-col">
+				<div className="relative flex h-full flex-col">
 					<div className="mx-auto flex w-full max-w-screen-sm h-full flex-col">
 						{/* 퀴즈 공지 영역 */}
 						<AnimatePresence initial={false}>
-							{chatStarted ? (
+							{chatStarted && (
 								<motion.div
 									key="notice"
 									initial={{ y: -20, opacity: 0 }}
@@ -105,30 +105,6 @@ export default function TodayPage() {
 										guideOpen={guideOpen}
 										onGuideToggle={() => setGuideOpen(!guideOpen)}
 									/>
-								</motion.div>
-							) : (
-								<motion.div
-									key="hero"
-									initial={{ y: 0, opacity: 1 }}
-									animate={{ y: 0, opacity: 1 }}
-									exit={{ y: -40, opacity: 0 }}
-									transition={{ type: "spring", stiffness: 260, damping: 26 }}
-									className="flex-shrink-0 p-6"
-								>
-									<div className="w-full rounded-xl border border-white/10 bg-neutral-950 p-5 text-center">
-										<h1 className="text-base font-semibold">
-											<motion.span
-												initial={{ backgroundPosition: "0% 50%" }}
-												animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-												transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-												className="bg-gradient-to-r from-purple-400 via-fuchsia-300 to-purple-400 bg-[length:200%_100%] bg-clip-text text-transparent"
-											>
-												오늘의 미스터리
-											</motion.span>
-										</h1>
-										<p className="mt-2 text-sm text-neutral-300 leading-relaxed">{QUIZ.description}</p>
-										<p className="mt-4 text-xs text-neutral-500">메시지를 보내면 채팅이 시작됩니다.</p>
-									</div>
 								</motion.div>
 							)}
 						</AnimatePresence>
