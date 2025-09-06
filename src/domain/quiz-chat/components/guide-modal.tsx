@@ -38,7 +38,7 @@ export function GuideModal({ open, onOpenChange }: GuideModalProps) {
 					<div className="bg-neutral-800/50 border border-neutral-700 rounded-lg p-4">
 						<h4 className="text-purple-400 font-medium mb-3">✅ 올바른 질문 방법</h4>
 						<ul className="space-y-2 text-sm text-neutral-300">
-							<li className="flex items-start gap-2"><span className="text-green-400 mt-0.5">•</span><span><strong>예/아니오로 답할 수 있는 질문만:</strong> "~인가요?", "~입니까?"</span></li>
+							<li className="flex items-start gap-2"><span className="text-green-400 mt-0.5">•</span><span><strong>예/아니오로 답할 수 있는 질문만:</strong> {'"~인가요?"'}, {'"~입니까?"'}</span></li>
 							<li className="flex items-start gap-2"><span className="text-green-400 mt-0.5">•</span><span><strong>핵심 요소 추리:</strong> 사건의 원인, 장소, 인물, 상황 등을 질문</span></li>
 							<li className="flex items-start gap-2"><span className="text-green-400 mt-0.5">•</span><span><strong>단계적 접근:</strong> 넓은 범위에서 시작해 점점 좁혀가기</span></li>
 						</ul>
@@ -46,9 +46,9 @@ export function GuideModal({ open, onOpenChange }: GuideModalProps) {
 					<div className="bg-red-950/30 border border-red-800/50 rounded-lg p-4">
 						<h4 className="text-red-400 font-medium mb-3">❌ 피해야 할 질문</h4>
 						<ul className="space-y-2 text-sm text-neutral-300">
-							<li className="flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span><span>"왜?", "어떻게?" 등 개방형 질문</span></li>
+							<li className="flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span><span>{'"왜?"'}, {'"어떻게?"'} 등 개방형 질문</span></li>
 							<li className="flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span><span>여러 질문을 한 번에 묻는 복합 질문</span></li>
-							<li className="flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span><span>"정답이 ~인가요?" 형태의 추측성 질문</span></li>
+							<li className="flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span><span>{'"정답이 ~인가요?"'} 형태의 추측성 질문</span></li>
 						</ul>
 					</div>
 				</div>

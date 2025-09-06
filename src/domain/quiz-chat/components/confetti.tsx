@@ -56,7 +56,7 @@ export function Confetti() {
           animate={{
             y: window.innerHeight + 100,
             x: piece.x + (Math.random() - 0.5) * 200,
-            rotation: piece.rotation + 360,
+            rotate: piece.rotation + 360,
             opacity: [1, 1, 0],
           }}
           transition={{
