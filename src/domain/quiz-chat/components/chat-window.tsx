@@ -94,10 +94,13 @@ export function ChatWindow({ onFirstMessage, onThinkingChange, readOnly = false,
 
 		try {
 			const history: HistoryItem[] = messages.map((m: Message) => ({ role: m.role, content: m.content }))
+			// 보낼 때 sessionId가 비어있다면 즉시 생성해서 사용
+			const sid = sessionId || crypto.randomUUID()
+			if (!sessionId) setSessionId(sid)
 			const res = await fetch("/api/chat", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ sessionId, quizId: currentQuizId, text, history })
+				body: JSON.stringify({ sessionId: sid, quizId: currentQuizId, text, history })
 			})
 			if (!res.ok) throw new Error("chat api error")
 			const data = await res.json()
